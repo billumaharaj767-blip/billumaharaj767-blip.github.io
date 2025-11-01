@@ -39,6 +39,7 @@
     object-fit: contain;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: opacity 2s ease;
   }
 
   button {
@@ -71,18 +72,30 @@
     display: none;
   }
 
-  /* Funny text */
-  #funnyText {
+  /* Intro text */
+  #introText {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    font-size: 1.6rem;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    color: rgba(0,0,0,0.8);
+    font-weight: bold;
+  }
+
+  /* Final text */
+  #finalText {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-weight: bold;
     color: rgba(0,0,0,0.85);
     opacity: 0;
-    font-weight: bold;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
-    transition: all 3s ease;
+    transition: opacity 2s ease;
   }
 </style>
 
@@ -95,6 +108,7 @@
 <!-- Screen 1 -->
 <div id="screen1" class="screen active">
   <h1>Happy Birthday Diana 🥳</h1>
+  <div id="introText">Short msg (It can be bit cringy lol so bear with me 😅)</div>
 </div>
 
 <!-- Screen 2 -->
@@ -113,15 +127,18 @@
 
 <!-- Screen 4 -->
 <div id="screen4" class="screen">
-  <img src="new 2.jpg" alt="Open Gift">
+  <img id="openGift" src="new 2.jpg" alt="Open Gift">
+  <div id="finalText">Happy Birthday!</div>
   <h2>— from Anurag 💫</h2>
-  <div id="funnyText">IK the quality is bad 😅</div>
 </div>
 
 <script>
   const screens = document.querySelectorAll('.screen');
   const music = document.getElementById('bgmusic');
-  const funnyText = document.getElementById('funnyText');
+  const introText = document.getElementById('introText');
+  const openGift = document.getElementById('openGift');
+  const finalText = document.getElementById('finalText');
+
   let current = 1;
 
   function nextScreen(n) {
@@ -130,7 +147,7 @@
     current = n;
   }
 
-  // Same music logic (no change)
+  // Play music
   window.addEventListener('load', () => {
     const playPromise = music.play();
     if (playPromise !== undefined) {
@@ -140,20 +157,24 @@
     }
   });
 
-  // Auto transitions
-  setTimeout(() => nextScreen(2), 2500);
+  // Intro text fade sequence
+  setTimeout(() => {
+    introText.style.opacity = 1;
+    setTimeout(() => {
+      introText.style.opacity = 0;
+      setTimeout(() => nextScreen(2), 1000);
+    }, 3000);
+  }, 1000);
 
+  // Show final Happy Birthday text after 12s on open gift
   document.getElementById('screen3').addEventListener('click', () => {
     nextScreen(4);
-
-    // show funny text after 3s
     setTimeout(() => {
-      funnyText.style.opacity = 1;
-      funnyText.style.transform = 'translate(-50%, -50%) scale(1.1)';
+      openGift.style.opacity = 0;
       setTimeout(() => {
-        funnyText.style.opacity = 0;
-      }, 3000);
-    }, 3000);
+        finalText.style.opacity = 1;
+      }, 2000);
+    }, 12000);
   });
 
   document.getElementById('screen4').addEventListener('click', () => music.pause());
