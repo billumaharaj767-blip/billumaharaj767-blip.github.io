@@ -97,6 +97,19 @@
     opacity: 0;
     transition: opacity 2s ease;
   }
+
+  /* Her picture fade + zoom animation */
+  #dianaPic {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    max-width: 70%;
+    border-radius: 14px;
+    opacity: 0;
+    transition: opacity 2s ease, transform 6s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
 </style>
 
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Comic+Neue&display=swap" rel="stylesheet">
@@ -114,7 +127,7 @@
 <!-- Screen 2 -->
 <div id="screen2" class="screen">
   <p style="max-width: 90%; font-size: 1.1rem;">
-    IDK how fast time has passed, like I remember I met you on Uhmegle on September 7th and then you mentioned your Birthday Date and I noted it down so I wouldn't forget it. Even tho I never forget 😅 — I thought 2 monsths are a lot its gonna take a while! But here we are..... Happy Birthday 🥳🎂🍾 Wish you all the happiness and success in life!
+    IDK how fast time has passed, like I remember I met you on Uhmegle on September 7th and then you mentioned your Birthday Date and I noted it down so I wouldn't forget it. Even tho I never forget 😅 — I waited so I could wish you! Happy Birthday 🥳🎂🍾 Wish you all the happiness and success in life!
   </p>
   <button onclick="nextScreen(3)">Tap to see your present 🎁</button>
 </div>
@@ -128,6 +141,7 @@
 <!-- Screen 4 -->
 <div id="screen4" class="screen">
   <img id="openGift" src="new 2.jpg" alt="Open Gift">
+  <img id="dianaPic" src="Screenshot 2025-09-17 224010.png" alt="Diana Picture">
   <div id="finalText">Happy Birthday!</div>
   <h2>— from Anurag 💫</h2>
 </div>
@@ -138,6 +152,7 @@
   const introText = document.getElementById('introText');
   const openGift = document.getElementById('openGift');
   const finalText = document.getElementById('finalText');
+  const dianaPic = document.getElementById('dianaPic');
 
   let current = 1;
 
@@ -166,13 +181,22 @@
     }, 3000);
   }, 1000);
 
-  // Show final Happy Birthday text after 12s on open gift
+  // Show final sequence
   document.getElementById('screen3').addEventListener('click', () => {
     nextScreen(4);
     setTimeout(() => {
       openGift.style.opacity = 0;
       setTimeout(() => {
         finalText.style.opacity = 1;
+
+        // Show Diana's picture fade + zoom
+        setTimeout(() => {
+          dianaPic.style.opacity = 1;
+          dianaPic.style.transform = "translate(-50%, -50%) scale(1.1)";
+          setTimeout(() => {
+            dianaPic.style.opacity = 0;
+          }, 3000);
+        }, 1500);
       }, 2000);
     }, 12000);
   });
