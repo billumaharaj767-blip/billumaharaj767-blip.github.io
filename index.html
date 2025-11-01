@@ -85,7 +85,7 @@
     transition: opacity 2s ease;
   }
 
-  /* Her picture fade + zoom animation */
+  /* Her picture */
   #dianaPic {
     position: absolute;
     top: 50%;
@@ -96,6 +96,20 @@
     opacity: 0;
     transition: opacity 2s ease, transform 6s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 2;
+  }
+
+  /* Roses falling */
+  .rose {
+    position: absolute;
+    top: -50px;
+    font-size: 24px;
+    animation: fall linear forwards;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0.8; }
   }
 </style>
 
@@ -172,15 +186,31 @@
           dianaPic.style.opacity = 1;
           dianaPic.style.transform = "translate(-50%, -50%) scale(1.1)";
           finalText.style.opacity = 0; // hide text when her pic fades in
-          setTimeout(() => {
-            dianaPic.style.opacity = 0;
-          }, 5500); // stays visible longer
+
+          // 🌹 Start rose rain
+          startRoseRain();
+
         }, 1500);
       }, 2000);
     }, 12000);
   });
 
   document.getElementById('screen4').addEventListener('click', () => music.pause());
+
+  // 🌹 Function for rose rain
+  function startRoseRain() {
+    const roseInterval = setInterval(() => {
+      const rose = document.createElement('div');
+      rose.classList.add('rose');
+      rose.innerHTML = '🌹';
+      rose.style.left = Math.random() * window.innerWidth + 'px';
+      rose.style.animationDuration = (4 + Math.random() * 3) + 's';
+      rose.style.fontSize = (20 + Math.random() * 20) + 'px';
+      document.body.appendChild(rose);
+
+      setTimeout(() => rose.remove(), 7000);
+    }, 300);
+  }
 </script>
 </body>
 </html>
