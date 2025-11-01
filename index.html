@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Diana 🎉</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Patrick Hand", "Comic Neue", sans-serif;
+    background-color: #cfe9ff;
+    color: #333;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .screen {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+
+  .active {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  img {
+    width: auto;
+    height: auto;
+    max-width: 70%;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  button {
+    margin-top: 20px;
+    background-color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+  }
+
+  @keyframes fadeInUp {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  h1, p {
+    animation: fadeInUp 1.5s ease forwards;
+    margin: 10px 20px;
+  }
+
+  audio {
+    display: none;
+  }
+
+  /* Funny text */
+  #funnyText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    font-size: 1.6rem;
+    color: rgba(0,0,0,0.85);
+    opacity: 0;
+    font-weight: bold;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    transition: all 3s ease;
+  }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Comic+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<audio id="bgmusic" src="music/music.mp3" autoplay loop></audio>
+
+<!-- Screen 1 -->
+<div id="screen1" class="screen active">
+  <h1>Happy Birthday Diana 🥳</h1>
+</div>
+
+<!-- Screen 2 -->
+<div id="screen2" class="screen">
+  <p style="max-width: 90%; font-size: 1.1rem;">
+    IDK how fast time has passed, like I remember I met you on Uhmegle on September 7th and then you mentioned your Birthday Date and I noted it down so I wouldn't forget it. Even tho I never forget 😅 — I waited so I could wish you! Happy Birthday 🥳🎂🍾 Wish you all the happiness and success in life!
+  </p>
+  <button onclick="nextScreen(3)">Tap to see your present 🎁</button>
+</div>
+
+<!-- Screen 3 -->
+<div id="screen3" class="screen">
+  <img src="images/closed.jpg" alt="Closed Gift">
+  <p>Tap to open 🎁</p>
+</div>
+
+<!-- Screen 4 -->
+<div id="screen4" class="screen">
+  <img src="images/open.jpg" alt="Open Gift">
+  <h2>— from Anurag 💫</h2>
+  <div id="funnyText">IK the quality is bad 😅</div>
+</div>
+
+<script>
+  const screens = document.querySelectorAll('.screen');
+  const music = document.getElementById('bgmusic');
+  const funnyText = document.getElementById('funnyText');
+  let current = 1;
+
+  function nextScreen(n) {
+    screens.forEach(s => s.classList.remove('active'));
+    document.getElementById('screen' + n).classList.add('active');
+    current = n;
+  }
+
+  // Same music logic (no change)
+  window.addEventListener('load', () => {
+    const playPromise = music.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        document.body.addEventListener('click', () => music.play(), { once: true });
+      });
+    }
+  });
+
+  // Auto transitions
+  setTimeout(() => nextScreen(2), 2500);
+
+  document.getElementById('screen3').addEventListener('click', () => {
+    nextScreen(4);
+
+    // show funny text after 3s
+    setTimeout(() => {
+      funnyText.style.opacity = 1;
+      funnyText.style.transform = 'translate(-50%, -50%) scale(1.1)';
+      setTimeout(() => {
+        funnyText.style.opacity = 0;
+      }, 3000);
+    }, 3000);
+  });
+
+  document.getElementById('screen4').addEventListener('click', () => music.pause());
+</script>
+</body>
+</html>
